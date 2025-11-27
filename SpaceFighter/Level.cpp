@@ -159,7 +159,7 @@ void Level::Update(const GameTime& gameTime)
 	if (m_killCount >= 3)
 	{
 		int currentLevelIndex = GetGameplayScreen()->GetLevelIndex();
-		if (currentLevelIndex == 0 && /*added for level 2 repeat */ derpyRandom == false)
+		if (currentLevelIndex == 0 && derpyRandom == false)
 		{
 			GetGameplayScreen()->LoadLevel(1);
 			//set to true so it doesn't constantly repeat level 2 once the player reaches the killcount
@@ -167,6 +167,9 @@ void Level::Update(const GameTime& gameTime)
 		}
 		else 
 		{
+			//reset killCount
+			m_killCount = 0;
+			derpyRandom = false;
 			GetGameplayScreen()->Exit(); 
 		}
 	}
