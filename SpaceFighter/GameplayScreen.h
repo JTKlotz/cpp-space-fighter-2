@@ -17,6 +17,9 @@ class GameplayScreen : public Screen
 
 public:
 
+	//method added to get the level index for scene transition/main menu
+	virtual int GetLevelIndex() const { return m_levelIndex; }
+
 	/** @brief Instantiate a gameplay screen object.
 		@param levelIndex The index of the level to load. */
 	GameplayScreen(const int levelIndex = 0);

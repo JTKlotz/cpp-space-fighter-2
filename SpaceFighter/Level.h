@@ -108,7 +108,10 @@ public:
 
 		return pClosest;
 	}
-
+	
+	//Methods for kill count to proc scene transition 
+	virtual void IncrementKillCount() {m_killCount++; std::cout << "potato\n" << m_killCount << "\n";}
+	virtual int GetKillCount() const {return m_killCount;}
 
 protected:
 
@@ -127,6 +130,8 @@ protected:
 	/** @brief Get the background audio for the level.
 		@return A pointer to the audio sample to play. */
 	virtual AudioSample* GetBackgroundAudio() { return m_pAudio; }
+
+	int m_killCount;
 
 private:
 

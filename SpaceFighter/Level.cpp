@@ -70,6 +70,8 @@ Level::Level()
 	pC->AddNonCollisionType(playerShip, playerProjectile);
 	pC->AddCollisionType(playerProjectile, enemyShip, PlayerShootsEnemy);
 	pC->AddCollisionType(playerShip, enemyShip, PlayerCollidesWithEnemy);
+
+	m_killCount = 0;
 }
 
 Level::~Level()
@@ -138,8 +140,29 @@ void Level::Update(const GameTime& gameTime)
 	}
 	
 	for (Explosion *pExplosion : s_explosions) pExplosion->Update(gameTime);
+	
+	//Original Code
+	//if (!m_pPlayerShip->IsActive()) GetGameplayScreen()->Exit();
 
-	if (!m_pPlayerShip->IsActive()) GetGameplayScreen()->Exit();
+
+	//Updated Code for level transition or back to main menu if the player gets destroyed
+	if (!m_pPlayerShip->IsActive())
+	{
+		GetGameplayScreen()->Exit();
+		return;
+	}
+	if (m_killCount >= 3)
+	{
+		int currentLevelIndex = GetGameplayScreen()->GetLevelIndex();
+		if (currentLevelIndex == 0) 
+		{
+			GetGameplayScreen()->LoadLevel(1); 
+		}
+		else 
+		{
+			GetGameplayScreen()->Exit(); 
+		}
+	}
 }
 
 

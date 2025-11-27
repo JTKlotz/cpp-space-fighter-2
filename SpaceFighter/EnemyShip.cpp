@@ -1,5 +1,7 @@
 
 #include "EnemyShip.h"
+#include "Level.h"
+
 
 
 EnemyShip::EnemyShip()
@@ -42,5 +44,17 @@ void EnemyShip::Initialize(const Vector2 position, const double delaySeconds)
 
 void EnemyShip::Hit(const float damage)
 {
+	//added
+	bool wasActive = IsActive();
+
 	Ship::Hit(damage);
+
+	//increment killcount for scene transition
+	if (wasActive && !IsActive())
+	{
+		if (GetCurrentLevel())
+		{
+			GetCurrentLevel()->IncrementKillCount(); 
+		}
+	}
 }
