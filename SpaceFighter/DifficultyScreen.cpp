@@ -16,16 +16,15 @@ DifficultyScreen::DifficultyScreen()
 
 void DifficultyScreen::LoadContent(ResourceManager& resourceManager)
 {
-	// Logo
-	m_pTexture = resourceManager.Load<Texture>("Textures\\Logo.png");
-	m_texturePosition = Game::GetScreenCenter() - Vector2::UNIT_Y * 150;
+	// If we want to add a logo
+	// m_pTexture = resourceManager.Load<Texture>("Textures\\Logo.png");
+	// m_texturePosition = Game::GetScreenCenter() - Vector2::UNIT_Y * 150;
 
 	// Create the menu items
-	//const int COUNT = 2;
 	const int COUNT = 3;
 	MenuItem* pItem;
-	Font::SetLoadSize(20, true);
-	Font* pFont = resourceManager.Load<Font>("Fonts\\Ethnocentric.ttf");
+	Font::SetLoadSize(60, true);
+	Font* pFont = resourceManager.Load<Font>("Fonts\\arial.ttf");
 
 	SetDisplayCount(COUNT);
 
@@ -35,7 +34,8 @@ void DifficultyScreen::LoadContent(ResourceManager& resourceManager)
 	for (int i = 0; i < COUNT; i++)
 	{
 		pItem = new MenuItem(text[i]);
-		pItem->SetPosition(Vector2(100, 100 + 50 * i));
+		//pItem->SetPosition(Vector2(100, 100 + 50 * i));
+		pItem->SetPosition(Vector2(Game::GetScreenWidth()/2, (Game::GetScreenHeight()/2 + 75 * i)-75));
 		pItem->SetFont(pFont);
 		pItem->SetColor(Color::BLUE);
 		pItem->SetSelected(i == 0);
@@ -46,18 +46,18 @@ void DifficultyScreen::LoadContent(ResourceManager& resourceManager)
 	// so that it doesn't quit the game (originally set in the constructor)
 	// Select a difficulty
 	GetMenuItem(EASY)->SetOnSelect([this]() {
-		SetOnRemove([this]() { AddScreen(new GameplayScreen(0)); });
+		SetOnRemove([this]() { AddScreen(new GameplayScreen(1)); });
 		Exit();
 		});
 
 
 	GetMenuItem(MEDIUM)->SetOnSelect([this]() {
-		SetOnRemove([this]() { AddScreen(new GameplayScreen(1)); });
+		SetOnRemove([this]() { AddScreen(new GameplayScreen(2)); });
 		Exit();
 		});
 
 	GetMenuItem(HARD)->SetOnSelect([this]() {
-		SetOnRemove([this]() { AddScreen(new GameplayScreen(2)); });
+		SetOnRemove([this]() { AddScreen(new GameplayScreen(3)); });
 		Exit();
 		});
 }
@@ -72,7 +72,7 @@ void DifficultyScreen::Update(const GameTime& gameTime)
 	{
 		pItem->SetAlpha(alpha);
 		isSelected = pItem->IsSelected();
-		pItem->SetColor(isSelected ? Color::GREEN : Color::RED);
+		pItem->SetColor(isSelected ? Color::WHITE : Color::BLUE);
 		pItem->SetTextOffset(isSelected ? Vector2::UNIT_X * offset : Vector2::ZERO);
 	}
 
@@ -82,7 +82,7 @@ void DifficultyScreen::Update(const GameTime& gameTime)
 void DifficultyScreen::Draw(SpriteBatch& spriteBatch)
 {
 	spriteBatch.Begin();
-	spriteBatch.Draw(m_pTexture, m_texturePosition, Color::WHITE * GetAlpha(), m_pTexture->GetCenter());
+	//spriteBatch.Draw(m_pTexture, m_texturePosition, Color::WHITE * GetAlpha(), m_pTexture->GetCenter());
 	MenuScreen::Draw(spriteBatch);
 	spriteBatch.End();
 }
