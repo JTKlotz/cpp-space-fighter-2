@@ -71,6 +71,7 @@ Level::Level()
 	pC->AddCollisionType(playerProjectile, enemyShip, PlayerShootsEnemy);
 	pC->AddCollisionType(playerShip, enemyShip, PlayerCollidesWithEnemy);
 
+	//variable for scene transition
 	m_killCount = 0;
 }
 
@@ -116,6 +117,8 @@ void Level::HandleInput(const InputState& input)
 	m_pPlayerShip->HandleInput(input);
 }
 
+//setting this bool to false before the method so that it doesn't keep reseting to false whenever update is called
+bool derpyRandom = false;
 
 void Level::Update(const GameTime& gameTime)
 {
@@ -151,12 +154,16 @@ void Level::Update(const GameTime& gameTime)
 		GetGameplayScreen()->Exit();
 		return;
 	}
+
+
 	if (m_killCount >= 3)
 	{
 		int currentLevelIndex = GetGameplayScreen()->GetLevelIndex();
-		if (currentLevelIndex == 0) 
+		if (currentLevelIndex == 0 && /*added for level 2 repeat */ derpyRandom == false)
 		{
-			GetGameplayScreen()->LoadLevel(1); 
+			GetGameplayScreen()->LoadLevel(1);
+			//set to true so it doesn't constantly repeat level 2 once the player reaches the killcount
+			derpyRandom = true;
 		}
 		else 
 		{
