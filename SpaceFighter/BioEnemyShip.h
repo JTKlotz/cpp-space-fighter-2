@@ -10,12 +10,15 @@ class BioEnemyShip : public EnemyShip
 public:
 
 	/** @brief Creates a new instance of BioEnemyShip. */
-	BioEnemyShip();
+	BioEnemyShip(const int difficulty);
 	virtual ~BioEnemyShip() { }
 
 	/** @brief Sets the texture that will be used to render the enemy ship.
 		@param pTexture A pointer to the texture. */
 	virtual void SetTexture(Texture *pTexture) { m_pTexture = pTexture; }
+
+	// Sets the difficulty of the enemy 
+	virtual void SetLevelDifficulty(int difficulty) { m_Difficulty = difficulty; }
 
 	/** @brief Updates the enemy ship.
 		@param gameTime A reference to the game time object. */
@@ -29,5 +32,5 @@ public:
 private:
 
 	Texture *m_pTexture = nullptr;
-
+	int m_Difficulty;
 };

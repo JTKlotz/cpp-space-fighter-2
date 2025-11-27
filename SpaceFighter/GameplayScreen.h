@@ -22,7 +22,7 @@ public:
 
 	/** @brief Instantiate a gameplay screen object.
 		@param levelIndex The index of the level to load. */
-	GameplayScreen(const int levelIndex = 0);
+	GameplayScreen(const int levelDifficulty, const int levelIndex = 0);
 	virtual ~GameplayScreen() { }
 
 	/** @brief Load the content for the screen.
@@ -32,6 +32,8 @@ public:
 	/** @brief Handle input for the screen.
 		@param input The current state of all player input devices. */
 	virtual void HandleInput(const InputState& input);
+
+	virtual void SetDifficulty(const int difficulty) { m_LevelDifficulty = difficulty; }
 
 	/** @brief Update the screen.
 		@param gameTime A reference to the game time object. */
@@ -49,6 +51,8 @@ public:
 private:
 
 	int m_levelIndex = 0;
+
+	int m_LevelDifficulty;
 
 	Level *m_pLevel = nullptr;
 

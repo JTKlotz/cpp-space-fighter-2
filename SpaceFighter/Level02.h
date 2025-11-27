@@ -9,11 +9,16 @@ class Level02 : public Level
 public:
 
 	/** @brief Instantiate a level object. */
-	Level02() { }
+	Level02(const int levelDifficulty) { SetDifficulty(levelDifficulty); }
 	virtual ~Level02() { }
 
 	/** @brief Load the content for the level, including game objects and resources.
 		@param resourceManager A reference to the game's resource manager,
 		used for loading and managing game assets (resources). */
 	virtual void LoadContent(ResourceManager& resourceManager);
+
+	virtual void SetDifficulty(int levelDifficulty) { m_LevelDifficulty = levelDifficulty; }
+
+private:
+	int m_LevelDifficulty;
 };

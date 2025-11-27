@@ -1,13 +1,12 @@
-
 #include "MainMenuScreen.h"
 #include "GameplayScreen.h"
 #include "DifficultyScreen.h"
 
 
-MainMenuScreen::MainMenuScreen()
+DifficultyScreen::DifficultyScreen()
 {
 	// when the screen is removed, quit the game
-	SetOnRemove([this](){ GetGame()->Quit(); });
+	SetOnRemove([this]() { GetGame()->Quit(); });
 
 	SetTransitionInTime(1);
 	SetTransitionOutTime(0.5f);
@@ -15,22 +14,23 @@ MainMenuScreen::MainMenuScreen()
 	Show();
 }
 
-void MainMenuScreen::LoadContent(ResourceManager& resourceManager)
+void DifficultyScreen::LoadContent(ResourceManager& resourceManager)
 {
 	// Logo
 	m_pTexture = resourceManager.Load<Texture>("Textures\\Logo.png");
 	m_texturePosition = Game::GetScreenCenter() - Vector2::UNIT_Y * 150;
 
 	// Create the menu items
-	const int COUNT = 2;
-	MenuItem *pItem;
+	//const int COUNT = 2;
+	const int COUNT = 3;
+	MenuItem* pItem;
 	Font::SetLoadSize(20, true);
-	Font *pFont = resourceManager.Load<Font>("Fonts\\arial.ttf");
+	Font* pFont = resourceManager.Load<Font>("Fonts\\Ethnocentric.ttf");
 
 	SetDisplayCount(COUNT);
 
-	enum Items { START_GAME, QUIT };
-	std::string text[COUNT] = { "Start Game", "Quit" };
+	enum Items { EASY, MEDIUM, HARD };
+	std::string text[COUNT] = { "Easy", "Medium", "Hard" };
 
 	for (int i = 0; i < COUNT; i++)
 	{
@@ -44,16 +44,25 @@ void MainMenuScreen::LoadContent(ResourceManager& resourceManager)
 
 	// when "Start Game" is selected, replace the "SetRemoveCallback" delegate
 	// so that it doesn't quit the game (originally set in the constructor)
-	GetMenuItem(START_GAME)->SetOnSelect([this](){
-		SetOnRemove([this](){ AddScreen(new DifficultyScreen()); });
+	// Select a difficulty
+	GetMenuItem(EASY)->SetOnSelect([this]() {
+		SetOnRemove([this]() { AddScreen(new GameplayScreen(0)); });
 		Exit();
-	});
+		});
 
-	// bind the Exit method to the quit menu item
-	GetMenuItem(QUIT)->SetOnSelect(std::bind(&MainMenuScreen::Exit, this));
+
+	GetMenuItem(MEDIUM)->SetOnSelect([this]() {
+		SetOnRemove([this]() { AddScreen(new GameplayScreen(1)); });
+		Exit();
+		});
+
+	GetMenuItem(HARD)->SetOnSelect([this]() {
+		SetOnRemove([this]() { AddScreen(new GameplayScreen(2)); });
+		Exit();
+		});
 }
 
-void MainMenuScreen::Update(const GameTime& gameTime)
+void DifficultyScreen::Update(const GameTime& gameTime)
 {
 	bool isSelected = false;
 	float alpha = GetAlpha();
@@ -63,14 +72,14 @@ void MainMenuScreen::Update(const GameTime& gameTime)
 	{
 		pItem->SetAlpha(alpha);
 		isSelected = pItem->IsSelected();
-		pItem->SetColor(isSelected ? Color::WHITE : Color::BLUE);
+		pItem->SetColor(isSelected ? Color::GREEN : Color::RED);
 		pItem->SetTextOffset(isSelected ? Vector2::UNIT_X * offset : Vector2::ZERO);
 	}
 
 	MenuScreen::Update(gameTime);
 }
 
-void MainMenuScreen::Draw(SpriteBatch& spriteBatch)
+void DifficultyScreen::Draw(SpriteBatch& spriteBatch)
 {
 	spriteBatch.Begin();
 	spriteBatch.Draw(m_pTexture, m_texturePosition, Color::WHITE * GetAlpha(), m_pTexture->GetCenter());
