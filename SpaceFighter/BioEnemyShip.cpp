@@ -3,9 +3,9 @@
 #include "Level.h"
 
 
-BioEnemyShip::BioEnemyShip(const int difficulty)
+BioEnemyShip::BioEnemyShip(const int difficulty, const int direction)
 {
-	SetLevelDifficulty(difficulty);
+	SetShipDirection(direction);
 	SetMaxHitPoints(1);
 	SetCollisionRadius(20);
 	SetSpeed(150*difficulty);
@@ -17,7 +17,7 @@ void BioEnemyShip::Update(const GameTime& gameTime)
 	if (IsActive())
 	{
 
-		if (m_Difficulty == 1)
+		if (m_ShipDirection == 1)
 		{
 			float x = sin(gameTime.GetTotalTime() * Math::PI + GetIndex());
 
@@ -25,36 +25,17 @@ void BioEnemyShip::Update(const GameTime& gameTime)
 
 			TranslatePosition(x, GetSpeed() * gameTime.GetElapsedTime());
 		}
+		
 		//editing position: trying to change the direction that the ships appear(L -> R)
 		//These edits change the direction from L -> R
-
-		if (m_Difficulty == 2)
+		if (m_ShipDirection == 2)
 		{
-			/*float y = sin(gameTime.GetTotalTime() * Math::PI + GetIndex());
+			float y = sin(gameTime.GetTotalTime() * Math::PI + GetIndex());
 
 			y *= GetSpeed() * gameTime.GetElapsedTime() * 1.4f;
 
-			TranslatePosition(GetSpeed() * gameTime.GetElapsedTime(), y);*/
+			TranslatePosition(GetSpeed() * gameTime.GetElapsedTime(), y);
 
-			float x = sin(gameTime.GetTotalTime() * Math::PI + GetIndex());
-
-			x *= GetSpeed() * gameTime.GetElapsedTime() * 1.4f;
-
-			TranslatePosition(x, GetSpeed() * gameTime.GetElapsedTime());
-		}
-
-		if (m_Difficulty == 3)
-		{
-			/*float y = sin(gameTime.GetTotalTime() * Math::PI + GetIndex());
-
-			y *= GetSpeed() * gameTime.GetElapsedTime() * 5.0f;
-
-			TranslatePosition(GetSpeed() * gameTime.GetElapsedTime(), y);*/
-			float x = sin(gameTime.GetTotalTime() * Math::PI + GetIndex());
-
-			x *= GetSpeed() * gameTime.GetElapsedTime() * 1.4f;
-
-			TranslatePosition(x, GetSpeed() * gameTime.GetElapsedTime());
 		}
 
 		if (!IsOnScreen()) Deactivate();

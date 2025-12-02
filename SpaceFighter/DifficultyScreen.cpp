@@ -28,13 +28,14 @@ void DifficultyScreen::LoadContent(ResourceManager& resourceManager)
 
 	SetDisplayCount(COUNT);
 
+	// set new difficulty items
 	enum Items { EASY, MEDIUM, HARD };
 	std::string text[COUNT] = { "Easy", "Medium", "Hard" };
 
 	for (int i = 0; i < COUNT; i++)
 	{
 		pItem = new MenuItem(text[i]);
-		//pItem->SetPosition(Vector2(100, 100 + 50 * i));
+		// move items to center screen
 		pItem->SetPosition(Vector2(Game::GetScreenWidth()/2, (Game::GetScreenHeight()/2 + 75 * i)-75));
 		pItem->SetFont(pFont);
 		pItem->SetColor(Color::BLUE);

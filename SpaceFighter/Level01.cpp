@@ -11,12 +11,25 @@ void Level01::LoadContent(ResourceManager& resourceManager)
 
 	const int COUNT = 21;
 
+	int direction;
+
+
 	double xPositions[COUNT] =
 	{
 		0.25, 0.2, 0.3,
 		0.75, 0.8, 0.7,
 		0.3, 0.25, 0.35, 0.2, 0.4,
 		0.7, 0.75, 0.65, 0.8, 0.6,
+		0.5, 0.4, 0.6, 0.45, 0.55
+	};
+
+	// new array for hard difficulty
+	double yPositions[COUNT] =
+	{
+		0.35, 0.25, 0.3,
+		0.6, 0.55, 0.65,
+		0.3, 0.3, 0.45, 0.3, 0.5,
+		0.6, 0.65, 0.5, 0.65, 0.6,
 		0.5, 0.4, 0.6, 0.45, 0.55
 	};
 	
@@ -32,16 +45,50 @@ void Level01::LoadContent(ResourceManager& resourceManager)
 	float delay = 3.0; // start delay
 	Vector2 position;
 
-	for (int i = 0; i < COUNT; i++)
+	if (m_LevelDifficulty == 3)
 	{
-		delay += delays[i];
-		position.Set(xPositions[i] * Game::GetScreenWidth(), -pTexture->GetCenter().Y);
+		direction = 1;
+		for (int i = 0; i < COUNT / 2; i++)
+		{
+			delay += delays[i];
+			position.Set(xPositions[i] * Game::GetScreenWidth(), -pTexture->GetCenter().Y);
 
-		BioEnemyShip *pEnemy = new BioEnemyShip(m_LevelDifficulty);
-		pEnemy->SetTexture(pTexture);
-		pEnemy->SetCurrentLevel(this);
-		pEnemy->Initialize(position, (float)delay);
-		AddGameObject(pEnemy);
+			BioEnemyShip* pEnemy = new BioEnemyShip(m_LevelDifficulty, direction);
+			pEnemy->SetTexture(pTexture);
+			pEnemy->SetCurrentLevel(this);
+			pEnemy->Initialize(position, (float)delay);
+			AddGameObject(pEnemy);
+		}
+		// change the direction the enemy appear
+		direction = 2;
+		for (int i = COUNT / 2; i < COUNT; i++)
+		{
+			delay += delays[i];
+			direction = 2;
+			position.Set(-pTexture->GetCenter().X, yPositions[i] * Game::GetScreenHeight());
+
+			BioEnemyShip* pEnemy = new BioEnemyShip(m_LevelDifficulty, direction);
+			pEnemy->SetTexture(pTexture);
+			pEnemy->SetCurrentLevel(this);
+			pEnemy->Initialize(position, (float)delay);
+			AddGameObject(pEnemy);
+		}
+	}
+	else
+	{
+		// make the enemy appear normally
+		direction = 1;
+		for (int i = 0; i < COUNT; i++)
+		{
+			delay += delays[i];
+			position.Set(xPositions[i] * Game::GetScreenWidth(), -pTexture->GetCenter().Y);
+
+			BioEnemyShip* pEnemy = new BioEnemyShip(m_LevelDifficulty, direction);
+			pEnemy->SetTexture(pTexture);
+			pEnemy->SetCurrentLevel(this);
+			pEnemy->Initialize(position, (float)delay);
+			AddGameObject(pEnemy);
+		}
 	}
 
 	// Setup background

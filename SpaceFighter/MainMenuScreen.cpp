@@ -44,6 +44,7 @@ void MainMenuScreen::LoadContent(ResourceManager& resourceManager)
 
 	// when "Start Game" is selected, replace the "SetRemoveCallback" delegate
 	// so that it doesn't quit the game (originally set in the constructor)
+	// Take user to next screen to select difficulty
 	GetMenuItem(START_GAME)->SetOnSelect([this](){
 		SetOnRemove([this](){ AddScreen(new DifficultyScreen()); });
 		Exit();
