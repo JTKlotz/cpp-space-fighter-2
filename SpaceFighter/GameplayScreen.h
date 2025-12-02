@@ -47,8 +47,14 @@ public:
 		@param levelIndex The index of the level to load. */
 	virtual void LoadLevel(const int levelIndex);
 
+	//added to persist across each level
+	virtual int GetNextLevelValue() { return m_nextLevelValue; }
+	virtual void SetNextLevelValue(int value) { m_nextLevelValue = value; }
 
 private:
+
+	//added as a member variable, to persist
+	int m_nextLevelValue = 0;
 
 	int m_levelIndex = 0;
 

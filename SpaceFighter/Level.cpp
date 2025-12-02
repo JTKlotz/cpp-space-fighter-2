@@ -117,8 +117,8 @@ void Level::HandleInput(const InputState& input)
 	m_pPlayerShip->HandleInput(input);
 }
 
-//setting this bool to false before the method so that it doesn't keep reseting to false whenever update is called
-bool derpyRandom = false;
+
+
 
 void Level::Update(const GameTime& gameTime)
 {
@@ -147,7 +147,6 @@ void Level::Update(const GameTime& gameTime)
 	//Original Code
 	//if (!m_pPlayerShip->IsActive()) GetGameplayScreen()->Exit();
 
-
 	//Updated Code for level transition or back to main menu if the player gets destroyed
 	if (!m_pPlayerShip->IsActive())
 	{
@@ -155,21 +154,16 @@ void Level::Update(const GameTime& gameTime)
 		return;
 	}
 
-
-	if (m_killCount >= 3)
+	if (m_killCount == 3)
 	{
-		int currentLevelIndex = GetGameplayScreen()->GetLevelIndex();
-		if (currentLevelIndex == 0 && derpyRandom == false)
+		if (GetGameplayScreen()->GetNextLevelValue() == 0)
 		{
-			GetGameplayScreen()->LoadLevel(1);
-			//set to true so it doesn't constantly repeat level 2 once the player reaches the killcount
-			derpyRandom = true;
-		}
-		else 
-		{
-			//reset killCount
 			m_killCount = 0;
-			derpyRandom = false;
+			GetGameplayScreen()->SetNextLevelValue(1); 
+			GetGameplayScreen()->LoadLevel(1);
+		}
+		else {
+			GetGameplayScreen()->SetNextLevelValue(0);
 			GetGameplayScreen()->Exit(); 
 		}
 	}
